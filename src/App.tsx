@@ -1,6 +1,6 @@
 import React from 'react';
 // import logo from './logo.svg';
-import Button from '@material-ui/core/Button';
+// import Button from '@material-ui/core/Button';
 import './App.css';
 import Header from "./components/Header";
 import Main from "./components/Main";
@@ -13,10 +13,6 @@ function App() {
       </header>
 
       <Main />
-
-      <Button variant="contained" color="primary">
-        Test Button
-      </Button>
 
     </div>
   );

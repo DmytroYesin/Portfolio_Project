@@ -3,7 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 // import Button from '@material-ui/core/Button';
 import './../App.css';
 import Home from "./Pages/Home";
-import TicTac from "./Pages/TicTac";
+import TicTac from "./Pages/TicTacToe/TicTac";
 
 
 const Main = () => (
