@@ -14,6 +14,7 @@ const initialState = {
     winning: 'play',
     step_count: 0,
     autoplay: false,
+    first_player_symbol: 'o',
 };
 
 interface MyState {
@@ -22,6 +23,7 @@ interface MyState {
     winning: string,
     step_count: number,
     autoplay: boolean,
+    first_player_symbol: string,
 }
 
 class TicTac extends React.Component<{}, MyState> {
@@ -30,7 +32,7 @@ class TicTac extends React.Component<{}, MyState> {
         this.state = initialState;
     }
 
-    printRow(props: string[], y:number) {
+    printRow (props: string[], y:number) {
         return  <React.Fragment key={"sub_row_comp_" + y}>
                 {
                     props.map((value: string, x) => {
@@ -44,7 +46,7 @@ class TicTac extends React.Component<{}, MyState> {
         </React.Fragment>;
     }
 
-    print_field(props: string[][]) {
+    print_field (props: string[][]) {
         return  <>
             <div key="Main_field" className="main_field">
                 {
@@ -60,13 +62,11 @@ class TicTac extends React.Component<{}, MyState> {
         </>;
     }
 
-    moveOn (x:number, y:number) {
+    moveOn = (x:number, y:number) => {
         this.setState((state) => {
             let newArr = state.field;
             newArr[y][x] = state.symbol;
             let isWin = this.CheckWin(newArr,  state.symbol);
-
-            console.log(isWin, state.winning);
 
             if (!isWin && state.winning === 'play' && state.step_count < 8) {
                 return {...state, field: newArr, symbol: state.symbol === 'o' ? 'x' : 'o', step_count: state.step_count + 1};
@@ -76,7 +76,7 @@ class TicTac extends React.Component<{}, MyState> {
                 return {...state, field: newArr, winning: 'draw'};
             }
         });
-    }
+    };
 
     clicked (x:number, y:number) {
         if (this.state.field[y][x] === '-' && this.state.winning === 'play') {
@@ -110,18 +110,79 @@ class TicTac extends React.Component<{}, MyState> {
         })
     }
 
-    restartGame () {
+    restartGame = () => {
         this.setState((state) => {
-            return {...state, winning: 'play', field: this.clearField(state.field)};
+            return {...state, winning: 'play', field: this.clearField(state.field), step_count: 0, symbol: state.first_player_symbol};
         });
-    }
+    };
 
-    changeControl () {
+    changeControl = () => {
         this.setState((state) => {
             return {...state, autoplay: !state.autoplay};
         });
     };
 
+    checkLine (coordinates: number[][]) {
+        let count = 0;
+        let empty: number[] = [];
+        coordinates.forEach((item) => {
+            if (this.state.field[item[0]][item[1]] === this.state.first_player_symbol) {
+                count += 1;
+            } else if (this.state.field[item[0]][item[1]] === '-') {
+                empty = item;
+            }
+        });
+
+        if (count === 2 && empty.length) {
+            return empty;
+        } else {
+            return false;
+        }
+    }
+
+    runAutoplay () {
+        let dangerPoint = [];
+        if (this.state.field[1][1] === '-') {
+            this.moveOn(1,1);
+        } else {
+            for (let i=0; i<3; i++) {
+                let row = [];
+                let col = [];
+                for (let k=0; k<3; k++) {
+                    row.push([i,k]);
+                    col.push([k,i]);
+
+
+                }
+
+                let rowCheck = this.checkLine(row);
+                let colCheck = this.checkLine(col);
+                if (rowCheck) dangerPoint.push(rowCheck);
+                if (colCheck) dangerPoint.push(colCheck);
+            }
+            let diag1 = this.checkLine([[0, 0], [1, 1], [2, 2]]);
+            let diag2 = this.checkLine([[2, 0], [1, 1], [0, 2]]);
+            if (diag1) dangerPoint.push(diag1);
+            if (diag2) dangerPoint.push(diag2);
+
+            if (dangerPoint.length) {
+                this.moveOn(dangerPoint[0][1], dangerPoint[0][0]);
+            }
+
+
+        }
+    }
+
+    componentDidUpdate() {
+        console.log('Updated')
+        setTimeout(() => {
+            console.log(this.state.autoplay, this.state.winning, this.state.symbol, this.state.first_player_symbol);
+            if (this.state.autoplay && this.state.winning === 'play' && this.state.symbol !==  this.state.first_player_symbol) {
+                console.log('In condition');
+                this.runAutoplay();
+            }
+        }, 100)
+    }
 
     render() {
         return (
