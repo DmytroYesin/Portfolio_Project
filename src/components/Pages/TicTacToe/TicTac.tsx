@@ -38,7 +38,11 @@ class TicTac extends React.Component<{}, MyState> {
                     props.map((value: string, x) => {
                         return <React.Fragment key={"sqr_" + y + x}>
                                     <div onClick={() => this.clicked(x, y)} >
-                                        <div className={value==='-' ? 'empty_symbol_class' : value==='o' ? 'o_symbol_class' : 'x_symbol_class'}> </div>
+                                        <div className={value==='-' ? 'empty_symbol_class' :
+                                                        value==='o' ? 'o_symbol_class' :
+                                                            'x_symbol_class'}
+                                        >
+                                        </div>
                                     </div>
                         </React.Fragment>
                     })
@@ -122,13 +126,17 @@ class TicTac extends React.Component<{}, MyState> {
         });
     };
 
-    checkLine (coordinates: number[][]) {
+    clone2DArray = (data: any[][]) => {
+        return data.map((subArr) => subArr.map((val) => val));
+    };
+
+    checkLine (coordinates: number[][], symbol: string, field: string[][] = this.state.field) {
         let count = 0;
         let empty: number[] = [];
         coordinates.forEach((item) => {
-            if (this.state.field[item[0]][item[1]] === this.state.first_player_symbol) {
+            if (field[item[0]][item[1]] === symbol) {
                 count += 1;
-            } else if (this.state.field[item[0]][item[1]] === '-') {
+            } else if (field[item[0]][item[1]] === '-') {
                 empty = item;
             }
         });
@@ -141,47 +149,79 @@ class TicTac extends React.Component<{}, MyState> {
     }
 
     runAutoplay () {
-        let dangerPoint = [];
-        if (this.state.field[1][1] === '-') {
-            this.moveOn(1,1);
-        } else {
-            for (let i=0; i<3; i++) {
-                let row = [];
-                let col = [];
-                for (let k=0; k<3; k++) {
-                    row.push([i,k]);
-                    col.push([k,i]);
+        let possibleSteps: number[][] = [],
+            predictField: any[] = [];
+        let emptyPoints = [];
+        let isDone = false;
+        let { field, symbol, first_player_symbol } = this.state;
+        let possibleLines = [
+            [[0, 0], [0, 1], [0, 2]],
+            [[1, 0], [1, 1], [1, 2]],
+            [[2, 0], [2, 1], [2, 2]],
+            [[0, 0], [1, 0], [2, 0]],
+            [[0, 1], [1, 1], [2, 1]],
+            [[0, 2], [1, 2], [2, 2]],
+            [[0, 0], [1, 1], [2, 2]],
+            [[2, 0], [1, 1], [0, 2]]
+        ];
 
+        if (field[1][1] !== '-') {
+            for (let i = 0; i < possibleLines.length; i++) {
+               let value = possibleLines[i];
+               let resWin = this.checkLine(value, symbol);
+               let resDanger = this.checkLine(value, first_player_symbol);
 
+               if (resWin) {
+                   this.moveOn(resWin[1], resWin[0]);
+                   isDone = true;
+                   break
+               } else if (resDanger) {
+                   this.moveOn(resDanger[1], resDanger[0]);
+                   isDone = true;
+                   break
+               }
+            }
+
+            if (!isDone) {
+                for (let i = 0; i < 3; i++) {
+                    let row = [];
+                    let col = [];
+                    for (let k = 0; k < 3; k++) {
+                        row.push([i, k]);
+                        col.push([k, i]);
+
+                        if (field[i][k] === '-') {
+                            emptyPoints.push([i, k]);
+                            predictField = this.clone2DArray(field);
+                            predictField[i][k] = symbol;
+                            possibleLines.forEach((value) => {
+                                let res = this.checkLine(value, symbol, predictField);
+                                if (res && ((i === 0 && (k === 0 || k === 2)) || (i ===2 && (k === 0 || k === 2)))) {
+                                    possibleSteps.push([i, k]);
+                                }
+                            })
+                        }
+                    }
                 }
 
-                let rowCheck = this.checkLine(row);
-                let colCheck = this.checkLine(col);
-                if (rowCheck) dangerPoint.push(rowCheck);
-                if (colCheck) dangerPoint.push(colCheck);
-            }
-            let diag1 = this.checkLine([[0, 0], [1, 1], [2, 2]]);
-            let diag2 = this.checkLine([[2, 0], [1, 1], [0, 2]]);
-            if (diag1) dangerPoint.push(diag1);
-            if (diag2) dangerPoint.push(diag2);
-
-            if (dangerPoint.length) {
-                this.moveOn(dangerPoint[0][1], dangerPoint[0][0]);
+                if (possibleSteps.length) {
+                    this.moveOn(possibleSteps[0][1], possibleSteps[0][0]);
+                } else if (!possibleSteps.length && !isDone) {
+                    this.moveOn(emptyPoints[0][1], emptyPoints[0][0]);
+                }
             }
 
-
+        } else {
+            this.moveOn(1, 1);
         }
     }
 
     componentDidUpdate() {
-        console.log('Updated')
         setTimeout(() => {
-            console.log(this.state.autoplay, this.state.winning, this.state.symbol, this.state.first_player_symbol);
             if (this.state.autoplay && this.state.winning === 'play' && this.state.symbol !==  this.state.first_player_symbol) {
-                console.log('In condition');
                 this.runAutoplay();
             }
-        }, 100)
+        }, 50)
     }
 
     render() {
