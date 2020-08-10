@@ -1,13 +1,13 @@
 import React from 'react';
 // import Button from '@material-ui/core/Button';
 // import { Link } from 'react-router-dom'
-import './../../App.css';
+import './AboutMe.css';
 
 
-const Home = () => (
-    <div>
-        <h1>Welcome to Dmytro Yesin's Website!</h1>
+const AboutMe = () => (
+    <div className="rootAboutMe">
+        <h1>About Me</h1>
     </div>
 );
 
-export default Home;
+export default AboutMe;

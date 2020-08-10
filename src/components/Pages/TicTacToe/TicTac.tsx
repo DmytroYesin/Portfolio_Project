@@ -221,7 +221,7 @@ class TicTac extends React.Component<{}, MyState> {
             if (this.state.autoplay && this.state.winning === 'play' && this.state.symbol !==  this.state.first_player_symbol) {
                 this.runAutoplay();
             }
-        }, 50)
+        }, 250)
     }
 
     render() {

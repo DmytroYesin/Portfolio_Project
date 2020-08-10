@@ -1,0 +1,15 @@
+.nav_bar_ul {
+  display: flex;
+  flex-direction: row;
+  color: white;
+}
+.nav_bar_ul a {
+   color: white;
+   margin: 10px;
+  text-decoration: none;
+}
+
+.menuItem {
+  padding: 5px;
+  font-size: 26px;
+}
