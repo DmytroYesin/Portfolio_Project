@@ -3,6 +3,7 @@ import './TicTac.css';
 import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import GameField from "./gameField";
 
 const initialState = {
     field: [
@@ -13,7 +14,7 @@ const initialState = {
     symbol: 'o',
     winning: 'play',
     step_count: 0,
-    autoplay: false,
+    autoplay: true,
     first_player_symbol: 'o',
 };
 
@@ -32,59 +33,21 @@ class TicTac extends React.Component<{}, MyState> {
         this.state = initialState;
     }
 
-    printRow (props: string[], y:number) {
-        return  <React.Fragment key={"sub_row_comp_" + y}>
-                {
-                    props.map((value: string, x) => {
-                        return <React.Fragment key={"sqr_" + y + x}>
-                                    <div onClick={() => this.clicked(x, y)} >
-                                        <div className={value==='-' ? 'empty_symbol_class' :
-                                                        value==='o' ? 'o_symbol_class' :
-                                                            'x_symbol_class'}
-                                        >
-                                        </div>
-                                    </div>
-                        </React.Fragment>
-                    })
-                }
-        </React.Fragment>;
-    }
-
-    print_field (props: string[][]) {
-        return  <>
-            <div key="Main_field" className="main_field">
-                {
-                    props.map((subArr: string[], y) => {
-                        return <React.Fragment key={"row_" + y}>
-                                    <div className="field_row">
-                                        {this.printRow(subArr, y)}
-                                    </div>
-                        </React.Fragment>;
-                    })
-                }
-            </div>
-        </>;
-    }
-
-    moveOn = (x:number, y:number) => {
-        this.setState((state) => {
-            let newArr = state.field;
-            newArr[y][x] = state.symbol;
-            let isWin = this.CheckWin(newArr,  state.symbol);
-
-            if (!isWin && state.winning === 'play' && state.step_count < 8) {
-                return {...state, field: newArr, symbol: state.symbol === 'o' ? 'x' : 'o', step_count: state.step_count + 1};
-            } else if (isWin && state.winning === 'play') {
-                return {...state, field: newArr, winning: 'win'};
-            } else if (!isWin && state.winning === 'play' && state.step_count === 8) {
-                return {...state, field: newArr, winning: 'draw'};
+    checkLine (coordinates: number[][], symbol: string, field: string[][] = this.state.field) {
+        let count = 0;
+        let empty: number[] = [];
+        coordinates.forEach((item) => {
+            if (field[item[0]][item[1]] === symbol) {
+                count += 1;
+            } else if (field[item[0]][item[1]] === '-') {
+                empty = item;
             }
         });
-    };
 
-    clicked (x:number, y:number) {
-        if (this.state.field[y][x] === '-' && this.state.winning === 'play') {
-            this.moveOn(x,y);
+        if (count === 2 && empty.length) {
+            return empty;
+        } else {
+            return false;
         }
     }
 
@@ -114,6 +77,18 @@ class TicTac extends React.Component<{}, MyState> {
         })
     }
 
+    clone2DArray (data: any[][]) {
+        return data.map((subArr) => subArr.map((val) => val));
+    };
+
+    componentDidUpdate() {
+        // setTimeout(() => {
+        if (this.state.autoplay && this.state.winning === 'play' && this.state.symbol !==  this.state.first_player_symbol) {
+            this.timeoutAutoplay();
+        }
+        // }, 250)
+    }
+
     restartGame = () => {
         this.setState((state) => {
             return {...state, winning: 'play', field: this.clearField(state.field), step_count: 0, symbol: state.first_player_symbol};
@@ -126,29 +101,29 @@ class TicTac extends React.Component<{}, MyState> {
         });
     };
 
-    clone2DArray = (data: any[][]) => {
-        return data.map((subArr) => subArr.map((val) => val));
-    };
+    doNextStep = (x:number, y:number) => {
+        this.setState((state) => {
+            let newArr = state.field;
+            newArr[y][x] = state.symbol;
+            let isWin = this.CheckWin(newArr,  state.symbol);
 
-    checkLine (coordinates: number[][], symbol: string, field: string[][] = this.state.field) {
-        let count = 0;
-        let empty: number[] = [];
-        coordinates.forEach((item) => {
-            if (field[item[0]][item[1]] === symbol) {
-                count += 1;
-            } else if (field[item[0]][item[1]] === '-') {
-                empty = item;
+            if (!isWin && state.winning === 'play' && state.step_count < 8) {
+                return {...state, field: newArr, symbol: state.symbol === 'o' ? 'x' : 'o', step_count: state.step_count + 1};
+            } else if (isWin && state.winning === 'play') {
+                return {...state, field: newArr, winning: 'win'};
+            } else if (!isWin && state.winning === 'play' && state.step_count === 8) {
+                return {...state, field: newArr, winning: 'draw'};
             }
         });
+    };
 
-        if (count === 2 && empty.length) {
-            return empty;
-        } else {
-            return false;
+    clicked = (x:number, y:number) => {
+        if (this.state.field[y][x] === '-' && this.state.winning === 'play') {
+            this.doNextStep(x,y);
         }
-    }
+    };
 
-    runAutoplay () {
+    runAutoplay = () => {
         let possibleSteps: number[][] = [],
             predictField: any[] = [];
         let emptyPoints = [];
@@ -172,11 +147,11 @@ class TicTac extends React.Component<{}, MyState> {
                let resDanger = this.checkLine(value, first_player_symbol);
 
                if (resWin) {
-                   this.moveOn(resWin[1], resWin[0]);
+                   this.doNextStep(resWin[1], resWin[0]);
                    isDone = true;
                    break
                } else if (resDanger) {
-                   this.moveOn(resDanger[1], resDanger[0]);
+                   this.doNextStep(resDanger[1], resDanger[0]);
                    isDone = true;
                    break
                }
@@ -205,24 +180,19 @@ class TicTac extends React.Component<{}, MyState> {
                 }
 
                 if (possibleSteps.length) {
-                    this.moveOn(possibleSteps[0][1], possibleSteps[0][0]);
+                    this.doNextStep(possibleSteps[0][1], possibleSteps[0][0]);
                 } else if (!possibleSteps.length && !isDone) {
-                    this.moveOn(emptyPoints[0][1], emptyPoints[0][0]);
+                    this.doNextStep(emptyPoints[0][1], emptyPoints[0][0]);
                 }
             }
-
         } else {
-            this.moveOn(1, 1);
+            this.doNextStep(1, 1);
         }
-    }
+    };
 
-    componentDidUpdate() {
-        setTimeout(() => {
-            if (this.state.autoplay && this.state.winning === 'play' && this.state.symbol !==  this.state.first_player_symbol) {
-                this.runAutoplay();
-            }
-        }, 250)
-    }
+    timeoutAutoplay = () => {
+        setTimeout(this.runAutoplay, 250);
+    };
 
     render() {
         return (
@@ -233,15 +203,17 @@ class TicTac extends React.Component<{}, MyState> {
                     "Player '" + this.state.symbol + "' is win!"
                     : this.state.winning === 'draw' ? "It's a draw!" : "Let's play"}</h2>
 
-                <div className="game_block" >
-                    {this.print_field(this.state.field)}
-                </div>
+                <GameField
+                    field={this.state.field}
+                    callback={this.clicked}
+                />
 
                 <div className="controlBlock">
 
                     <FormControlLabel
-                        control={<Checkbox key="autoplay"
-                                    value={this.state.autoplay}
+                        control={<Checkbox
+                                    key="autoplay"
+                                    checked={this.state.autoplay}
                                     onChange={this.changeControl}
                                     disabled={this.state.step_count > 0}
                              />}
