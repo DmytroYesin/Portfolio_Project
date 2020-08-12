@@ -81,6 +81,14 @@ class TicTac extends React.Component<{}, MyState> {
         return data.map((subArr) => subArr.map((val) => val));
     };
 
+    randomStep (limit:number) {
+        if (limit > 1) {
+            return Math.floor(Math.random() * limit);
+        } else {
+            return 0;
+        }
+    }
+
     componentDidUpdate() {
         // setTimeout(() => {
         if (this.state.autoplay && this.state.winning === 'play' && this.state.symbol !==  this.state.first_player_symbol) {
@@ -125,20 +133,19 @@ class TicTac extends React.Component<{}, MyState> {
 
     runAutoplay = () => {
         let possibleSteps: number[][] = [],
-            predictField: any[] = [];
-        let emptyPoints = [];
-        let isDone = false;
-        let { field, symbol, first_player_symbol } = this.state;
-        let possibleLines = [
-            [[0, 0], [0, 1], [0, 2]],
-            [[1, 0], [1, 1], [1, 2]],
-            [[2, 0], [2, 1], [2, 2]],
-            [[0, 0], [1, 0], [2, 0]],
-            [[0, 1], [1, 1], [2, 1]],
-            [[0, 2], [1, 2], [2, 2]],
-            [[0, 0], [1, 1], [2, 2]],
-            [[2, 0], [1, 1], [0, 2]]
-        ];
+            emptyPoints = [],
+            isDone = false,
+            { field, symbol, first_player_symbol } = this.state,
+            possibleLines = [
+                [[0, 0], [0, 1], [0, 2]],
+                [[1, 0], [1, 1], [1, 2]],
+                [[2, 0], [2, 1], [2, 2]],
+                [[0, 0], [1, 0], [2, 0]],
+                [[0, 1], [1, 1], [2, 1]],
+                [[0, 2], [1, 2], [2, 2]],
+                [[0, 0], [1, 1], [2, 2]],
+                [[2, 0], [1, 1], [0, 2]]
+            ];
 
         if (field[1][1] !== '-') {
             for (let i = 0; i < possibleLines.length; i++) {
@@ -167,11 +174,11 @@ class TicTac extends React.Component<{}, MyState> {
 
                         if (field[i][k] === '-') {
                             emptyPoints.push([i, k]);
-                            predictField = this.clone2DArray(field);
+                            let predictField = this.clone2DArray(field);
                             predictField[i][k] = symbol;
                             possibleLines.forEach((value) => {
-                                let res = this.checkLine(value, symbol, predictField);
-                                if (res && ((i === 0 && (k === 0 || k === 2)) || (i ===2 && (k === 0 || k === 2)))) {
+                                if (this.checkLine(value, symbol, predictField) &&
+                                    ((i === 0 && (k === 0 || k === 2)) || (i ===2 && (k === 0 || k === 2)))) {
                                     possibleSteps.push([i, k]);
                                 }
                             })
@@ -180,9 +187,11 @@ class TicTac extends React.Component<{}, MyState> {
                 }
 
                 if (possibleSteps.length) {
-                    this.doNextStep(possibleSteps[0][1], possibleSteps[0][0]);
+                    let randPos = this.randomStep(possibleSteps.length);
+                    this.doNextStep(possibleSteps[randPos][1], possibleSteps[randPos][0]);
                 } else if (!possibleSteps.length && !isDone) {
-                    this.doNextStep(emptyPoints[0][1], emptyPoints[0][0]);
+                    let randEmp = this.randomStep(emptyPoints.length);
+                    this.doNextStep(emptyPoints[randEmp][1], emptyPoints[randEmp][0]);
                 }
             }
         } else {
