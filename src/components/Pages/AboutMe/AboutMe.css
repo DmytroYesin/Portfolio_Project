@@ -3,3 +3,25 @@
   flex-direction: column;
   padding: 40px;
 }
+
+.btn_block {
+  display: flex;
+  padding: 10px;
+  justify-content: center;
+}
+.btn_block Button {
+  margin: 10px;
+  width: 80px;
+}
+
+.Accordion_list {
+  width: 100%;
+}
+.second_subItem {
+  width: 80px;
+}
+.Accordion_list > .List_item {
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+}
