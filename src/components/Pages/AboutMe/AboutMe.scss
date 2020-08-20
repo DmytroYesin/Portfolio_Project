@@ -1,0 +1,68 @@
+.rootAboutMe {
+  display: flex;
+  flex-direction: column;
+  padding: 40px;
+}
+
+.btn_block {
+  display: flex;
+  padding: 10px;
+  justify-content: center;
+}
+.btn_block Button {
+  margin: 10px;
+  width: 80px;
+}
+
+.Accordion {
+  width: 100%;
+
+  .Accordion_BG {
+    background-color: aliceblue;
+  }
+
+  .Accordion_head {
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+
+  .Accordion_list {
+    width: 100%;
+
+    .List_item {
+      text-align: left;
+      display: flex;
+      padding: 5px 5px 5px 20px;
+      justify-content: space-between;
+
+      .first_subItem {
+        max-width: calc(100% - 70px);
+        padding: 5px 10px 5px 0;
+        display: list-item;
+        list-style-type: disc;
+
+        ::marker {
+          font-size: 1.4rem;
+        }
+      }
+
+      .second_subItem {
+        min-width: 70px;
+        padding: 5px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .rootAboutMe {
+    padding: 20px;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .rootAboutMe {
+    padding: 20px 10px;
+  }
+}
+

@@ -1,5 +1,5 @@
 import React from 'react';
-import './TicTac.css';
+import './TicTac.scss';
 
 
 function GameField(props:any) {

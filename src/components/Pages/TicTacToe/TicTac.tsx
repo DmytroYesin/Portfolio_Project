@@ -1,5 +1,5 @@
 import React from 'react';
-import './TicTac.css';
+import './TicTac.scss';
 import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';

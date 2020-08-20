@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Button from '@material-ui/core/Button';
 import Input from '@material-ui/core/Input';
 // import { Link } from 'react-router-dom'
-import './Home.css';
+import './Home.scss';
 
 
 const Home = () => {
