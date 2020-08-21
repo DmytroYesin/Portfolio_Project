@@ -6,7 +6,7 @@ import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import Typography from '@material-ui/core/Typography';
 import './AboutMe.scss';
-
+import ExpandIcon from "./../../Atoms/ExpandIcon";
 
 const AboutMe = () => {
 
@@ -20,6 +20,7 @@ const AboutMe = () => {
                         key="Accordion_one_sum"
                         aria-controls="panel1a-content"
                         id="panel1a-header"
+                        expandIcon={<ExpandIcon />}
                     >
                         <Typography className="Accordion_head">Skills</Typography>
                     </AccordionSummary>
@@ -62,6 +63,7 @@ const AboutMe = () => {
                         key="Accordion_two_sum"
                         aria-controls="panel2a-content"
                         id="panel2a-header"
+                        expandIcon={<ExpandIcon />}
                     >
                         <Typography className="Accordion_head">Previous jobs</Typography>
                     </AccordionSummary>
@@ -77,6 +79,7 @@ const AboutMe = () => {
                         key="Accordion_three_sum"
                         aria-controls="panel2a-content"
                         id="panel3a-header"
+                        expandIcon={<ExpandIcon />}
                     >
                         <Typography className="Accordion_head">Education</Typography>
                     </AccordionSummary>
@@ -92,6 +95,7 @@ const AboutMe = () => {
                         key="Accordion_four_sum"
                         aria-controls="panel2a-content"
                         id="panel4a-header"
+                        expandIcon={<ExpandIcon />}
                     >
                         <Typography className="Accordion_head">Other</Typography>
                     </AccordionSummary>
