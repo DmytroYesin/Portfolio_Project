@@ -2,19 +2,27 @@
   display: flex;
   flex-direction: row;
   color: white;
-}
-.nav_bar_ul a {
-   color: white;
-   margin: 10px;
-  text-decoration: none;
+
+  .menuItem {
+    padding: 5px;
+    font-size: 26px;
+
+    a {
+      color: white;
+      margin: 10px;
+      text-decoration: none;
+
+      .nav_bar_icon {
+        width: 20px;
+        height: 20px;
+        margin-right: 10px;
+      }
+    }
+  }
 }
 
-.nav_bar_icon {
-  width: 20px;
-  height: 20px;
-}
-
-.menuItem {
-  padding: 5px;
-  font-size: 26px;
+@media screen and (max-width: 576px) {
+  .hided_text {
+    display: none;
+  }
 }

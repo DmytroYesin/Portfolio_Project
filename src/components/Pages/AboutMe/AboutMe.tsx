@@ -8,11 +8,38 @@ import Typography from '@material-ui/core/Typography';
 import './AboutMe.scss';
 import ExpandIcon from "./../../Atoms/ExpandIcon";
 
-const AboutMe = () => {
+const My_Skills = [
+    {desc: 'working experience with React, Redux and Redux Saga', exper: '2+ years'},
+    {desc: 'knowledge of JavaScript, ES6', exper: '3 years'},
+    {desc: 'working experience with Git', exper: '3 years'},
+    {desc: 'strong knowledge of HTML5, CSS3, Bootstrap', exper: '3 years'},
+    {desc: 'working experience with  AngularJS', exper: '2 years'},
+    {desc: 'working experience with  Angular 2+', exper: '1 year'},
+    {desc: 'Linux Bash', exper: ''},
+];
+
+function SkillsList (props: any) {
+    return <>
+        {
+            props.map((item: any) => {
+                return <div className="List_item" key={item.desc}>
+                    <div className="first_subItem">{item.desc}</div>
+                    <div className="second_subItem">{item.exper}</div>
+                </div>
+            })
+        }
+    </>
+}
+
+function AboutMe() {
 
     return (
         <div className="rootAboutMe">
-           <h1>About Me</h1>
+            <h2>About Me</h2>
+
+            <div className="Main_info">
+
+            </div>
 
             <div className="Accordion">
                 <Accordion key="Accordion_one" className="Accordion_BG">
@@ -27,33 +54,9 @@ const AboutMe = () => {
                     <AccordionDetails>
 
                         <div className="Accordion_list">
-                            <div className="List_item">
-                                <div className="first_subItem">working experience with React, Redux and Redux Saga</div>
-                                <div className="second_subItem">2+ years</div>
-                            </div>
-                            <div className="List_item">
-                                <div className="first_subItem">knowledge of JavaScript, ES6</div>
-                                <div className="second_subItem">3 years</div>
-                            </div>
-                            <div className="List_item">
-                                <div className="first_subItem">working experience with Git</div>
-                                <div className="second_subItem">3 years</div>
-                            </div>
-                            <div className="List_item">
-                                <div className="first_subItem">strong knowledge of HTML5, CSS3, Bootstrap</div>
-                                <div className="second_subItem">3 years</div>
-                            </div>
-                            <div className="List_item">
-                                <div className="first_subItem">working experience with  AngularJS</div>
-                                <div className="second_subItem">2 year</div>
-                            </div>
-                            <div className="List_item">
-                                <div className="first_subItem">working experience with  Angular 2+</div>
-                                <div className="second_subItem">1 year</div>
-                            </div>
-                            <div className="List_item">
-                                <div className="first_subItem">Linux Bash</div>
-                            </div>
+
+                            {SkillsList(My_Skills)}
+
                         </div>
 
                     </AccordionDetails>

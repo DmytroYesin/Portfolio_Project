@@ -3,7 +3,7 @@ import './AtomsStyles.scss';
 
 const ExpandIcon = () => {
     return (
-        <img className="icon_size" src="/public/images/expand.png" alt="V" />
+        <img className="icon_size" src="/images/expand.png" alt="V" />
     );
 };
 
