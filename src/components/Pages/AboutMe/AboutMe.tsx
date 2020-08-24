@@ -38,7 +38,15 @@ function AboutMe() {
             <h2>About Me</h2>
 
             <div className="Main_info">
-
+                <div className="Main_info_text_block">
+                    <div className="Main_info_name">Dmytro Yesin</div>
+                    <div className="Main_info_else">26.06.1994</div>
+                    <div className="Main_info_else">Phone: +380507768418</div>
+                    <div className="Main_info_else">Gmail: dmytroyesin@gmail.com</div>
+                </div>
+                <div className="Main_info_picture_block">
+                    <img src="/images/Yesin_Avatar.jpg" alt="Avatar" />
+                </div>
             </div>
 
             <div className="Accordion">

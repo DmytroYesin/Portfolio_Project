@@ -15,8 +15,32 @@
 }
 
 .Main_info {
-  width: 100%;
-  padding: 20px 0;
+  padding: 20px 80px;
+  display: flex;
+
+  .Main_info_text_block {
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+    padding: 10px 5% 10px 0;
+    text-align: left;
+
+    .Main_info_name {
+      font-size: 1.4rem;
+      font-weight: 500;
+    }
+    .Main_info_else {
+      font-size: 1rem;
+    }
+  }
+  .Main_info_picture_block {
+    display: flex;
+    width: 25%;
+
+    img {
+      width: 100%;
+    }
+  }
 }
 
 .Accordion {
@@ -62,12 +86,40 @@
 @media screen and (max-width: 768px) {
   .rootAboutMe {
     padding: 20px;
+
+    .Main_info {
+      padding: 20px 0;
+      .Main_info_text_block {
+        width: 65%;
+      }
+      .Main_info_picture_block {
+        width: 30%;
+      }
+    }
   }
 }
 
-@media screen and (max-width: 360px) {
+@media screen and (max-width: 420px) {
   .rootAboutMe {
-    padding: 20px 10px;
+    padding: 20px 15px;
+
+    h2 {
+      margin: 5px 0;
+    }
+    .Main_info {
+      display: flex;
+      flex-direction: column-reverse;
+      align-items: center;
+
+      .Main_info_text_block {
+        width: 80%;
+        padding: 10px 10% 10px 10%;
+      }
+      .Main_info_picture_block {
+        width: 60%;
+      }
+    }
   }
 }
+
 

@@ -203,7 +203,7 @@ class TicTac extends React.Component<{}, MyState> {
 
     render() {
         return (
-            <div key="main_TicTac">
+            <div className="main_TicTac">
                 <h1>Tic Tac Toe</h1>
 
                 <h2>{this.state.winning === 'win' ?
