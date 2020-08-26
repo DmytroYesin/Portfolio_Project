@@ -5,6 +5,7 @@ import '../App.scss';
 import Home from "./Pages/Home/Home";
 import TicTac from "./Pages/TicTacToe/TicTac";
 import AboutMe from "./Pages/AboutMe/AboutMe";
+import Trash from "./Pages/Trash/Trash";
 
 const Main = () => (
     <main>
@@ -12,6 +13,7 @@ const Main = () => (
         <Route exact path='/' component={Home}/>
         <Route path='/about-me' component={AboutMe}/>
         <Route path='/tic-tac-toe' component={TicTac}/>
+        <Route path='/trash' component={Trash}/>
       </Switch>
     </main>
 );

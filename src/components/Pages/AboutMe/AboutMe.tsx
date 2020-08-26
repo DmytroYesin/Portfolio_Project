@@ -79,10 +79,17 @@ function AboutMe() {
                         <Typography className="Accordion_head">Previous jobs</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
-                        <Typography>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-                            sit amet blandit leo lobortis eget.
-                        </Typography>
+
+                        <div className="Accordion_list">
+                            <div className="prev_jobs_item">
+                                <div className="jobs_item_title">
+
+                                </div>
+                                <div className="jobs_item_description">
+
+                                </div>
+                            </div>
+                        </div>
                     </AccordionDetails>
                 </Accordion>
                 <Accordion key="Accordion_three" className="Accordion_BG">
