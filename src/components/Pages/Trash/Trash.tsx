@@ -16,6 +16,50 @@ const Trash = () => {
         document.title =  inputVal;
     });
 
+    const sleep = (ms: number) => new Promise((res) => setTimeout(res, ms));
+
+    const loadProfile = async () => {
+        await sleep(1700);
+        console.log({ profileId: "1" });
+        return { profileId: "1" };
+    };
+    const loadProducts = async () => {
+        await sleep(1800);
+        console.log([{ productId: "2" }]);
+        return [{ productId: "2" }];
+    };
+    const loadBasket = async () => {
+        await sleep(1900);
+        console.log({ products: [{ productId: "2" }] });
+        return { products: [{ productId: "2" }] };
+    };
+
+    async function sequential() {
+        const profile = await loadProfile();
+        const products = await loadProducts();
+        const basket = await loadBasket();
+        return console.log({ profile, products, basket });
+    }
+    
+    async function parallelStupid() {
+        let profilePromise = loadProfile();
+        let productsPromise = loadProducts();
+        let basketPromise = loadBasket();
+        const profile = await profilePromise;
+        const products = await productsPromise;
+        const basket = await basketPromise;
+        return console.log({ profile, products, basket });
+    }
+
+    async function AsyncAll() {
+        let [profile, products, basket] = await Promise.all([
+            loadProfile(),
+            loadProducts(),
+            loadBasket(),
+        ]);
+        return console.log({ profile, products, basket });
+    }
+
     return <>
         <div className="rootHome">
             <h1>Welcome to Dmytro Yesin's Website!</h1>
@@ -30,6 +74,20 @@ const Trash = () => {
 
             <Button  onClick={() => updClicker(clicker + 1)} variant="outlined" color="primary">
                 Plus
+            </Button>
+        </div>
+
+        <div className="btn_block">
+            <Button  onClick={() => sequential()} variant="outlined" color="primary">
+                sequetial
+            </Button>
+
+            <Button  onClick={() => parallelStupid()} variant="outlined" color="primary">
+                Parallel
+            </Button>
+
+            <Button  onClick={() => AsyncAll()} variant="outlined" color="primary">
+                Async All
             </Button>
         </div>
 

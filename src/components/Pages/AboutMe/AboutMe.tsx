@@ -83,7 +83,9 @@ function AboutMe() {
                         <div className="Accordion_list">
                             <div className="prev_jobs_item">
                                 <div className="jobs_item_title">
-
+                                    <div className="jobs_item_title-position">Front-End developer</div>
+                                    <div className="jobs_item_title-company">Navinox, Kyiv (Software developing)</div>
+                                    <div className="jobs_item_title-company">07.2019 – now</div>
                                 </div>
                                 <div className="jobs_item_description">
 
