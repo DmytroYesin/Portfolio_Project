@@ -60,6 +60,45 @@ const Trash = () => {
         return console.log({ profile, products, basket });
     }
 
+    let dat = [
+        'cat', 'act',
+        'rome', 'more',
+        'hello',
+        'limes', 'slime', 'smile', '',
+    ];
+
+
+    function getAnagramCount(data:any) {
+        let acc:any = {};
+
+        data.forEach((item:any) => {
+            let sorted = item.split('').sort().join('');
+            let keys =  Object.keys(acc);
+
+            if (keys.length) {
+                let isAdded = false;
+
+                keys.forEach((key, index) => {
+                    if (!isAdded) {
+                        if (key.split('').sort().join('') === sorted) {
+                            acc[key] = acc[key] + 1;
+                            isAdded = true;
+                        } else if (index == keys.length - 1) {
+                            acc[item] = 0;
+                        }
+                    }
+                })
+
+            } else {
+                acc[item] = 0;
+            }
+        });
+
+        return acc;
+    }
+
+    console.log(getAnagramCount(dat));
+
     return <>
         <div className="rootHome">
             <h1>Welcome to Dmytro Yesin's Website!</h1>
