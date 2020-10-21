@@ -4,17 +4,21 @@ import React from 'react';
 import './App.scss';
 import Header from "./components/Header/Header";
 import Main from "./components/Main";
+import { store } from "./Redux-Store/Store"
+import { Provider } from 'react-redux'
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <Header />
-      </header>
+      <Provider store={store}>
+        <div className="App">
+          <header className="App-header">
+            <Header />
+          </header>
 
-      <Main />
+          <Main />
 
-    </div>
+        </div>
+      </Provider>
   );
 }
 

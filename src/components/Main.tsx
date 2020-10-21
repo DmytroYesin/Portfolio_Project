@@ -6,6 +6,7 @@ import Home from "./Pages/Home/Home";
 import TicTac from "./Pages/TicTacToe/TicTac";
 import AboutMe from "./Pages/AboutMe/AboutMe";
 import Trash from "./Pages/Trash/Trash";
+import Weather from "./Pages/WeatherPage/Weather";
 
 const Main = () => (
     <main>
@@ -14,6 +15,7 @@ const Main = () => (
         <Route path='/about-me' component={AboutMe}/>
         <Route path='/tic-tac-toe' component={TicTac}/>
         <Route path='/trash' component={Trash}/>
+        <Route path='/weather' component={Weather}/>
       </Switch>
     </main>
 );

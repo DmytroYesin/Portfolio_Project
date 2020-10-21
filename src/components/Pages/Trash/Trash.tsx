@@ -83,7 +83,7 @@ const Trash = () => {
                         if (key.split('').sort().join('') === sorted) {
                             acc[key] = acc[key] + 1;
                             isAdded = true;
-                        } else if (index == keys.length - 1) {
+                        } else if (index === keys.length - 1) {
                             acc[item] = 0;
                         }
                     }

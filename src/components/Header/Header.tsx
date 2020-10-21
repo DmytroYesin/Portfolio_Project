@@ -25,6 +25,12 @@ const Header = () => (
                         <div className="hided_text">Tic Tac Toe</div>
                     </NavLink >
                 </div>
+                <div className="menuItem">
+                    <NavLink activeClassName='Active_item' to='/weather'>
+                        <img className="nav_bar_icon" src="/images/home.png" alt="weather"/>
+                        <div className="hided_text">Weather</div>
+                    </NavLink >
+                </div>
             </div>
         </nav>
     </header>
