@@ -1,12 +1,31 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import './Trash.scss';
 import Button from "@material-ui/core/Button";
 import Input from "@material-ui/core/Input/Input";
+import Dropdown from 'react-dropdown';
+import 'react-dropdown/style.css';
+import {langContext} from "../../Context";
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
 
 const Trash = () => {
     const [clicker, updClicker] = useState(0);
     const [inputVal, updInput] = useState('');
     const width = useWindowsWidth();
+
+    const [data, setData] = useState(0);
+    useEffect(() => {
+        fetch(`https://api.openweathermap.org/data/2.5/forecast?q=Kyiv&lang=en&units=metric&APPID=6e2b9099562f5a55a540f32121233cc6`)
+            .then(res => res.json())
+            .then(data => {
+                console.log(data.cod)
+                setData(data.cod);
+            })
+    }, [])
+
+    const Context:any = useContext(langContext);
+    // @ts-ignore
+    console.log(Context.language);
 
     function handleInputChange(e:any) {
         updInput(e.target.value);
@@ -99,6 +118,15 @@ const Trash = () => {
 
     console.log(getAnagramCount(dat));
 
+    const options = [
+        'american', 'decimal',
+    ];
+    const [optionValue, setOptionValue] = useState(options[0]);
+
+    const handleChangeDropdown = () => {
+
+    }
+
     return <>
         <div className="rootHome">
             <h1>Welcome to Dmytro Yesin's Website!</h1>
@@ -137,6 +165,71 @@ const Trash = () => {
         </div>
 
         <h2>{width}</h2>
+        <div className="btn_block">
+
+            {Context.language}
+            <Button  onClick={() => Context.setLanguage('en')} variant="outlined" color="primary">
+                EN
+            </Button>
+
+            <Button  onClick={() => Context.setLanguage('he')} variant="outlined" color="primary">
+                HE
+            </Button>
+        </div>
+        <div className="btn_block">
+
+            <Popup
+                trigger={<Button  variant="outlined" color="primary">POP-UP</Button>}
+                modal
+                nested
+            >
+                { (close:any) => (
+                    <div className="modal">
+                        <button className="close" onClick={close}>
+                            &times;
+                        </button>
+                        <div className="header"> Modal Title </div>
+                        <div className="content">
+                            {' '}
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque, a nostrum.
+                            Dolorem, repellat quidem ut, minima sint vel eveniet quibusdam voluptates
+                            delectus doloremque, explicabo tempore dicta adipisci fugit amet dignissimos?
+                            <br />
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur sit
+                            commodi beatae optio voluptatum sed eius cumque, delectus saepe repudiandae
+                            explicabo nemo nam libero ad, doloribus, voluptas rem alias. Vitae?
+                        </div>
+                        <div className="actions">
+                            <Popup
+                                trigger={<button className="button"> Trigger </button>}
+                                position="top center"
+                                nested
+                            >
+            <span>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae
+              magni omnis delectus nemo, maxime molestiae dolorem numquam
+              mollitia, voluptate ea, accusamus excepturi deleniti ratione
+              sapiente! Laudantium, aperiam doloribus. Odit, aut.
+            </span>
+                            </Popup>
+                            <button
+                                className="button"
+                                onClick={() => {
+                                    console.log('modal closed ');
+                                    close();
+                                }}
+                            >
+                                close modal
+                            </button>
+                        </div>
+                    </div>
+                )}
+            </Popup>
+
+
+        </div>
+
+        <h2>Data: {data}</h2>
 
     </>
 };

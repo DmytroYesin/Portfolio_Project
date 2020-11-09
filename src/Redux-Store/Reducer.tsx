@@ -1,17 +1,8 @@
-const initialState = {
-    lang: "en",
-    weatherData: null,
-};
+import { combineReducers } from 'redux';
+import lang from "./reducers/lang_reducer";
+import weatherData from "./reducers/weather_Reducer";
 
-export default function reducer(state = initialState, action:any) {
-    switch (action.type) {
-        case "CHANGE_LANG":
-            return {...state, lang: action.payload};
-        case "FETCH_WEATHER_DATA":
-            return {...state, weatherData:  action.payload};
-        default:
-            return state;
-    }
-};
-
-
+export default combineReducers({
+    lang,
+    weatherData
+})

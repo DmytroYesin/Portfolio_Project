@@ -2,9 +2,12 @@ import React, {useEffect, useState} from 'react';
 import './weather.scss';
 import Button from "@material-ui/core/Button";
 // import Input from "@material-ui/core/Input/Input";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import Loader from 'react-loader-spinner';
 import { connect } from 'react-redux';
+import WeatherNowCard from "../../Atoms/WeatherNowAtom";
 
-import { asyncGetWeather } from "../../../Redux-Store/actions/weatherActions";
+import { fetchWeather } from "../../../Redux-Store/actions/weatherActions";
 import Input from "@material-ui/core/Input/Input";
 
 const Weather = (props:any) => {
@@ -17,25 +20,44 @@ const Weather = (props:any) => {
     }
 
     useEffect(() => {
-        if (!props.globalStore.weatherData) {
-            props.onGetWeather(props.globalStore.lang);
+        if (!props.globalStore.weatherData.data && !props.globalStore.weatherData.loading) {
+            props.onGetWeather(props.globalStore.lang, city);
         }
     });
 
     useEffect(() => {
-        if (props.globalStore.weatherData && props.globalStore.weatherData.list) {
-            updIconName(props.globalStore.weatherData.list[0].weather[0].icon);
+        if (props.globalStore.weatherData.data && props.globalStore.weatherData.data.list) {
+            updIconName(props.globalStore.weatherData.data.list[0].weather[0].icon);
         }
-    }, [props.globalStore.weatherData]);
+    }, [props.globalStore.weatherData.data]);
 
     return <>
-        <div className="rootHome">
-            <h1>{ props.globalStore.weatherData && (props.globalStore.weatherData.city ? props.globalStore.weatherData.city.name : props.globalStore.weatherData.message) }</h1>
-            <h3>{ props.globalStore.weatherData && (props.globalStore.weatherData.city ? 'Temperature: ' + props.globalStore.weatherData.list[0].main.temp : null) }</h3>
+        <div className="btn_block">
+                {
+                    props.globalStore.weatherData.loading ?
+                        <Loader
+                            type="TailSpin"
+                            color="#00BFFF"
+
+                        /> : props.globalStore.weatherData.data && <WeatherNowCard
+                                city={props.globalStore.weatherData.data.city.name}
+                                temp={props.globalStore.weatherData.data.list[0].main.temp}
+                                temp_feels={props.globalStore.weatherData.data.list[0].main.feels_like}
+                                pressure={props.globalStore.weatherData.data.list[0].main.pressure}
+                                humidity={props.globalStore.weatherData.data.list[0].main.humidity}
+                                err={props.globalStore.weatherData.data.message}
+                        />
+                }
         </div>
 
         <div className="btn_block">
-            <img src={ iconName ? `http://openweathermap.org/img/wn/${iconName}@4x.png` : '' } alt="no icon" />
+            {
+                props.globalStore.weatherData.loading ?
+                    <div className="loader_wrapper"><Loader
+                        type="TailSpin"
+                        color="#00BFFF"
+
+                    /></div> : <img src={ iconName ? `http://openweathermap.org/img/wn/${iconName}@4x.png` : '' } alt="no icon" /> }
         </div>
 
         <div className="btn_block">
@@ -77,7 +99,7 @@ export default connect(
         },
         onGetWeather: (lang:string, city:string) => {
             // @ts-ignore
-            dispatch(asyncGetWeather(lang, city));
+            dispatch(fetchWeather(lang, city));
         }
     })
 )(Weather);

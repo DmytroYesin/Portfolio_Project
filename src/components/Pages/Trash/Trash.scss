@@ -3,3 +3,7 @@
   flex-direction: column;
   padding: 40px;
 }
+
+.popup-content {
+  -webkit-animation: anvil .3s cubic-bezier(.38,.1,.36,.9) forwards;
+}
