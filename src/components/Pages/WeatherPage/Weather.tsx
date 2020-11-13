@@ -10,10 +10,15 @@ import WeatherNowCard from "../../Atoms/WeatherNowAtom";
 import { fetchWeather } from "../../../Redux-Store/actions/weatherActions";
 import Input from "@material-ui/core/Input/Input";
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const Weather = (props:any) => {
 
     const [city, updInput] = useState('Kyiv');
     let [iconName, updIconName] = useState (null);
+
+    const notify = () => toast("Start Updating");
 
     function handleInputChange(e:any) {
         updInput(e.target.value);
@@ -79,12 +84,16 @@ const Weather = (props:any) => {
         </div>
 
         <div className="btn_block">
-            <Button  onClick={() => props.onGetWeather(props.globalStore.lang, city)}
+            <Button  onClick={() => {
+                notify();
+                return props.onGetWeather(props.globalStore.lang, city)
+            }}
                      variant="contained"
                      color="primary"
                      className="fullWidth">
                 Get Weather data
             </Button>
+            <ToastContainer />
         </div>
     </>
 };
